@@ -6,6 +6,8 @@ import com.pechnikovdg.restaurantvoting.model.User;
 import com.pechnikovdg.restaurantvoting.repository.CrudUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +59,7 @@ public class AccountController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "users", key = "#authUser.username")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete authenticated {}", authUser);
         userRepository.deleteById(authUser.id());
@@ -65,7 +68,8 @@ public class AccountController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
+    @CachePut(value = "users", key = "#authUser.username")
+    public User update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
         log.info("update {} to {}", authUser, user);
         User oldUser = authUser.getUser();
         assureIdConsistent(user, oldUser.id());
@@ -73,6 +77,6 @@ public class AccountController {
         if (user.getPassword() == null) {
             user.setPassword(oldUser.getPassword());
         }
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }
