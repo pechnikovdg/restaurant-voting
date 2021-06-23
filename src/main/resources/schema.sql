@@ -10,7 +10,8 @@ CREATE SEQUENCE IF NOT EXISTS global_seq START WITH 100000;
 CREATE TABLE restaurant
 (
     id   INTEGER DEFAULT NEXT VALUE FOR global_seq PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT restaurant_unique_name_idx UNIQUE (name)
 );
 
 CREATE TABLE users
