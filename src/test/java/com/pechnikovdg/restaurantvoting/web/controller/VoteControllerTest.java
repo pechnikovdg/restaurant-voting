@@ -35,16 +35,6 @@ class VoteControllerTest extends AbstractControllerTest {
     private CrudVoteRepository voteRepository;
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + VOTE1_ID))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(VOTE_MATCHER.contentJson(vote1));
-    }
-
-    @Test
     @WithUserDetails(value = USER_MAIL)
     void getCurrentVoteForAuthorizedUser() throws Exception {
         perform(MockMvcRequestBuilders.get(URL + "/user/today"))
@@ -55,26 +45,6 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void getVotesForAuthorizedUser() throws Exception {
         perform(MockMvcRequestBuilders.get(URL + "/user"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(VOTE_MATCHER.contentJson(List.of(vote1, vote9)));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getForRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + "/filter?restaurantId=" + restaurant1.id()))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(VOTE_MATCHER.contentJson(List.of(vote1, vote6, vote7, vote15)));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getByUser() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + "filter?userId=" + user1.id()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))

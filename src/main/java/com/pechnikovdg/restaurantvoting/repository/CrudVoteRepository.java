@@ -15,9 +15,6 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     Vote getById(int id);
 
     @EntityGraph("Vote.userAndRestaurant")
-    List<Vote> getByRestaurantId(int id);
-
-    @EntityGraph("Vote.userAndRestaurant")
     Vote getByUserIdAndDate(int userId, LocalDate date);
 
     @EntityGraph("Vote.userAndRestaurant")

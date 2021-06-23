@@ -33,13 +33,6 @@ public class VoteController {
     public static final String URL_VOTES = "/api/votes";
     private final CrudVoteRepository voteRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{id}")
-    public Vote get(@PathVariable int id) {
-        log.info("get vote with id {}", id);
-        return checkNotFoundWithId(voteRepository.getById(id), id);
-    }
-
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/today")
     public Vote getCurrentVoteForAuthorizedUser() {
@@ -52,20 +45,6 @@ public class VoteController {
     public List<Vote> getVotesForAuthorizedUser() {
         log.info("get votes for authorized user");
         return voteRepository.getByUserId(SecurityUtil.get().id());
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/filter", params = "restaurantId")
-    public List<Vote> getForRestaurant(@RequestParam int restaurantId) {
-        log.info("get votes for restaurant with id {}", restaurantId);
-        return voteRepository.getByRestaurantId(restaurantId);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = "/filter", params = "userId")
-    public List<Vote> getByUser(@RequestParam int userId) {
-        log.info("get votes by user with id {}", userId);
-        return voteRepository.getByUserId(userId);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -107,6 +86,6 @@ public class VoteController {
         int id = getCurrentVoteForAuthorizedUser().getId();
         voteTo.setId(id);
         checkVotingTime(LocalTime.now());
-        voteRepository.save(updateFromTo(get(id), voteTo));
+        voteRepository.save(updateFromTo(checkNotFoundWithId(voteRepository.getById(id), id), voteTo));
     }
 }

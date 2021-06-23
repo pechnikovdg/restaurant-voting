@@ -38,13 +38,10 @@ Each restaurant provides a new menu each day.
 | /api/restaurants/{id}/dishes/filter?date=value                      |     GET     | ADMIN / USER | get dishes by restaurant and date                       |
 | /api/restaurants/{id}/dishes/filter?startDate=value1&endDate=value2 |     GET     | ADMIN / USER | get dishes by restaurant and between two dates included |
 | /api/restaurants/{id}/dishes/today                                  |     GET     | ADMIN / USER | get dishes by restaurant on current date                |
-| /api/votes/{id}                                                     |     GET     |     ADMIN    | get vote                                                |
 | /api/votes/user/today                                               |     GET     |     USER     | get today's vote for authorized user                    |
 | /api/votes/user                                                     |     GET     |     USER     | get votes for authorized user                           |
-| /api/votes/filter?restaurantId={restaurantId}                       |     GET     |     ADMIN    | get votes for restaurant                                |
-| /api/votes/filter?userId={userId}                                   |     GET     |     ADMIN    | get votes by user                                       |
-| /api/votes/amount/filter?restaurantId={restaurantId}&date={date}    |     GET     | ADMIN / USER | get amount of votes for restaurant on date              |
-| /api/votes/amount/today/filter?restaurantId={restaurantId}          |     GET     | ADMIN / USER | get amount of votes for restaurant today                |
+| /api/votes/amount/filter?restaurantId={restaurantId}&date={date}    |     GET     |     USER     | get amount of votes for restaurant on date              |
+| /api/votes/amount/today/filter?restaurantId={restaurantId}          |     GET     |     USER     | get amount of votes for restaurant today                |
 | /api/votes                                                          |     POST    |     USER     | create vote                                             |
 | /api/votes                                                          |     PUT     |     USER     | update vote                                             |                                                         |             |              |                                                         |
 
@@ -175,11 +172,6 @@ Each restaurant provides a new menu each day.
 `curl -X GET 'localhost:8080/api/restaurants/100000/dishes/current-date' \
 -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
 
-* get vote
-
-`curl -X GET 'localhost:8080/api/votes/100021' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
-
 * get today's vote for authorized user
 
 `curl -X GET 'localhost:8080/api/votes/user/today' \
@@ -189,16 +181,6 @@ Each restaurant provides a new menu each day.
 
 `curl -X GET 'localhost:8080/api/votes/user' \
 -H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ='`
-
-* get votes for restaurant
-
-`curl -X GET 'localhost:8080/api/votes/filter?restaurantId=100000' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
-
-* get votes by user
-
-`curl -X GET 'localhost:8080/api/votes/filter?userId=100019' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
 
 * get amount of votes for restaurant on date
 
