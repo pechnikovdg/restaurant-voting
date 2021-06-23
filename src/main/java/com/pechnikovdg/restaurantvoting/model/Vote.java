@@ -30,7 +30,7 @@ import java.time.LocalDate;
 )
 public class Vote extends BaseEntity {
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "vote_date", nullable = false)
     @NotNull
     private LocalDate date;
 

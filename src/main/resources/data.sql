@@ -3,7 +3,7 @@ VALUES ('restaurant1'),
        ('restaurant2'),
        ('restaurant3');
 
-INSERT INTO dish (date, description, price, restaurant_id)
+INSERT INTO dish (dish_date, description, price, restaurant_id)
 VALUES (CURRENT_DATE, 'dish1', 500, 100000),
        (CURRENT_DATE, 'dish2', 200, 100000),
        (CURRENT_DATE, 'dish3', 600, 100000),
@@ -40,7 +40,7 @@ VALUES ('100011', 'ADMIN'),
        ('100019', 'USER'),
        ('100020', 'USER');
 
-INSERT INTO vote (date, restaurant_id, user_id)
+INSERT INTO vote (vote_date, restaurant_id, user_id)
 VALUES (CURRENT_DATE - 2, 100000, 100013),
        (CURRENT_DATE - 2, 100002, 100014),
        (CURRENT_DATE - 2, 100001, 100015),

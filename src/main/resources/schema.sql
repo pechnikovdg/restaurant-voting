@@ -35,23 +35,25 @@ CREATE TABLE user_role
 CREATE TABLE dish
 (
     id            INTEGER DEFAULT NEXT VALUE FOR global_seq PRIMARY KEY,
-    date          DATE         NOT NULL,
+    dish_date     DATE         NOT NULL,
     description   VARCHAR(255) NOT NULL,
     price         INTEGER      NOT NULL,
     restaurant_id INTEGER      NOT NULL,
     CONSTRAINT dish_description_price_restaurant_idx UNIQUE (description, price, restaurant_id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
-CREATE INDEX dish_date_restaurant_idx ON dish (date, restaurant_id);
+CREATE
+INDEX dish_date_restaurant_idx ON dish (dish_date, restaurant_id);
 
 CREATE TABLE vote
 (
     id            INTEGER DEFAULT NEXT VALUE FOR global_seq PRIMARY KEY,
-    date          DATE    NOT NULL,
+    vote_date     DATE    NOT NULL,
     restaurant_id INTEGER NOT NULL,
     user_id       INTEGER NOT NULL,
-    CONSTRAINT vote_date_user_idx UNIQUE (date, user_id),
+    CONSTRAINT vote_date_user_idx UNIQUE (vote_date, user_id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
-CREATE INDEX vote_date_restaurant_idx ON vote (date, restaurant_id);
+CREATE
+INDEX vote_date_restaurant_idx ON vote (vote_date, restaurant_id);

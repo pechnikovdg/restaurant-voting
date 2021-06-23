@@ -32,7 +32,7 @@ public class Dish extends BaseEntity {
     @Range(min = 10, max = 10000)
     private int price;
 
-    @Column(name = "date")
+    @Column(name = "dish_date")
     @NotNull
     private LocalDate date;
 
