@@ -39,6 +39,7 @@ public class Dish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
     private Restaurant restaurant;
 
     public Dish(Integer id, String description, int price, LocalDate date, Restaurant restaurant) {
