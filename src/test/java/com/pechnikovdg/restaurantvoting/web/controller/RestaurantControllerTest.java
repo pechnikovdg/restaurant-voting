@@ -10,12 +10,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import static com.pechnikovdg.restaurantvoting.TestUtil.readFromJson;
-import static com.pechnikovdg.restaurantvoting.dish.DishTestData.*;
 import static com.pechnikovdg.restaurantvoting.restaurant.RestaurantTestData.*;
 import static com.pechnikovdg.restaurantvoting.restaurant.RestaurantTestUtil.getNew;
 import static com.pechnikovdg.restaurantvoting.restaurant.RestaurantTestUtil.getUpdated;
@@ -102,47 +97,5 @@ public class RestaurantControllerTest extends AbstractControllerTest {
         newRestaurant.setId(newId);
         RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
         RESTAURANT_MATCHER.assertMatch(restaurantRepository.findById(newId).orElse(null), newRestaurant);
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getDishesByRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + RESTAURANT1_ID + "/dishes"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(DISH_MATCHER.contentJson(List.of(dish1, dish2, dish3)));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getDishesByRestaurantOnDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + RESTAURANT1_ID + "/dishes/filter?date="
-                + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(DISH_MATCHER.contentJson(List.of(dish1, dish2, dish3)));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getDishesByRestaurantBetweenDates() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + RESTAURANT1_ID + "/dishes/filter?startDate=&endDate="
-                + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(DISH_MATCHER.contentJson(List.of(dish1, dish2, dish3)));
-    }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getDishesByRestaurantToday() throws Exception {
-        perform(MockMvcRequestBuilders.get(URL + RESTAURANT1_ID + "/dishes/today"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(DISH_MATCHER.contentJson(List.of(dish1, dish2, dish3)));
     }
 }

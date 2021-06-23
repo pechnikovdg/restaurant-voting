@@ -5,9 +5,11 @@ import com.pechnikovdg.restaurantvoting.repository.CrudDishRepository;
 import com.pechnikovdg.restaurantvoting.to.DishTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +77,38 @@ public class DishController {
     public List<Dish> getOnCurrentDate() {
         log.info("get all dishes on current date");
         return dishRepository.getByDate(LocalDate.now());
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(value = "/filter", params = "restaurantId")
+    public List<Dish> getDishesByRestaurant(@RequestParam(value = "restaurantId") int id) {
+        log.info("get dishes by restaurant with id {}", id);
+        return dishRepository.getByRestaurantId(id);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(value = "/filter", params = {"restaurantId", "date"})
+    public List<Dish> getDishesByRestaurantOnDate(@RequestParam(value = "restaurantId") int id,
+                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("get dishes by restaurant with id {} on date {}", id, date);
+        return dishRepository.getByRestaurantIdAndDate(id, date);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(value = "/filter", params = {"restaurantId", "startDate", "endDate"})
+    public List<Dish> getDishesByRestaurantBetweenDates(@RequestParam(value = "restaurantId") int id,
+                                                        @Nullable @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                        @Nullable @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        log.info("get for restaurant with id {} between dates ({} - {}) included", id, startDate, endDate);
+        LocalDate firstDate = startDate != null ? startDate : LocalDate.of(2000, 1, 1);
+        LocalDate secondDate = endDate != null ? endDate : LocalDate.of(3000, 1, 1);
+        return dishRepository.getBetweenDatesIncluded(id, firstDate, secondDate);
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping(value = "/today/filter", params = "restaurantId")
+    public List<Dish> getDishesByRestaurantToday(@RequestParam(value = "restaurantId") int id) {
+        log.info("get dishes by restaurant with id {} today", id);
+        return dishRepository.getByRestaurantIdAndDate(id, LocalDate.now());
     }
 }

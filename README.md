@@ -18,32 +18,32 @@ Each restaurant provides a new menu each day.
 
 ## API
 
-| URL                                                                 | Http Method |     Role     |                       Description                       |
-|---------------------------------------------------------------------|:-----------:|:------------:|:--------------------------------------------------------|
-| /api/account/register                                               |     POST    |   ANONYMOUS  | register new user                                       |
-| /api/account                                                        |     GET     |     USER     | get authorized user                                     |
-| /api/account                                                        |    DELETE   |     USER     | delete authorized user                                  |
-| /api/account                                                        |     PUT     |     USER     | update authorized user                                  |
-| /api/dishes/{id}                                                    |     GET     | ADMIN / USER | get dish                                                |
-| /api/dishes/{id}                                                    |    DELETE   |     ADMIN    | delete dish                                             |
-| /api/dishes/{id}                                                    |     PUT     |     ADMIN    | update dish                                             |
-| /api/dishes                                                         |     POST    |     ADMIN    | create dish                                             |
-| /api/dishes/today                                                   |     GET     | ADMIN / USER | get dishes on current date                              |
-| /api/restaurants                                                    |     GET     | ADMIN / USER | get all restaurants                                     |
-| /api/restaurants/{id}                                               |     GET     | ADMIN / USER | get restaurant                                          |
-| /api/restaurants/{id}                                               |    DELETE   |     ADMIN    | delete restaurant                                       |
-| /api/restaurants/{id}                                               |     PUT     |     ADMIN    | update restaurant                                       |
-| /api/restaurants                                                    |     POST    |     ADMIN    | create restaurant                                       |
-| /api/restaurants/{id}/dishes                                        |     GET     | ADMIN / USER | get dishes by restaurant                                |
-| /api/restaurants/{id}/dishes/filter?date=value                      |     GET     | ADMIN / USER | get dishes by restaurant and date                       |
-| /api/restaurants/{id}/dishes/filter?startDate=value1&endDate=value2 |     GET     | ADMIN / USER | get dishes by restaurant and between two dates included |
-| /api/restaurants/{id}/dishes/today                                  |     GET     | ADMIN / USER | get dishes by restaurant on current date                |
-| /api/votes/user/today                                               |     GET     |     USER     | get today's vote for authorized user                    |
-| /api/votes/user                                                     |     GET     |     USER     | get votes for authorized user                           |
-| /api/votes/amount/filter?restaurantId={restaurantId}&date={date}    |     GET     |     USER     | get amount of votes for restaurant on date              |
-| /api/votes/amount/today/filter?restaurantId={restaurantId}          |     GET     |     USER     | get amount of votes for restaurant today                |
-| /api/votes                                                          |     POST    |     USER     | create vote                                             |
-| /api/votes/{id}                                                     |     PUT     |     USER     | update vote                                             |                                                         |             |              |                                                         |
+| URL                                                                      | Http Method |     Role     |                       Description                       |
+|--------------------------------------------------------------------------|:-----------:|:------------:|:-------------------------------------------------------:|
+| /api/account/register                                                    |     POST    |   ANONYMOUS  | register new user                                       |
+| /api/account                                                             |     GET     |     USER     | get authorized user                                     |
+| /api/account                                                             |    DELETE   |     USER     | delete authorized user                                  |
+| /api/account                                                             |     PUT     |     USER     | update authorized user                                  |
+| /api/dishes/{id}                                                         |     GET     | ADMIN / USER | get dish                                                |
+| /api/dishes/{id}                                                         |    DELETE   |     ADMIN    | delete dish                                             |
+| /api/dishes/{id}                                                         |     PUT     |     ADMIN    | update dish                                             |
+| /api/dishes/                                                             |     POST    |     ADMIN    | create dish                                             |
+| /api/dishes/today                                                        |     GET     | ADMIN / USER | get dishes on current date                              |
+| /api/dishes/filter?restaurantId={id}                                     |     GET     | ADMIN / USER | get dishes by restaurant                                |
+| /api/dishes/filter?restaurantId={id}&date={value}                        |     GET     | ADMIN / USER | get dishes by restaurant and date                       |
+| /api/dishes/filter?restaurantId={id}&startDate={value1}&endDate={value2} |     GET     | ADMIN / USER | get dishes by restaurant and between two dates included |
+| /api/dishes/today/filter?restaurantId={id}                               |     GET     | ADMIN / USER | get dishes by restaurant on current date                |
+| /api/restaurants                                                         |     GET     | ADMIN / USER | get all restaurants                                     |
+| /api/restaurants/{id}                                                    |     GET     | ADMIN / USER | get restaurant                                          |
+| /api/restaurants/{id}                                                    |    DELETE   |     ADMIN    | delete restaurant                                       |
+| /api/restaurants/{id}                                                    |     PUT     |     ADMIN    | update restaurant                                       |
+| /api/restaurants                                                         |     POST    |     ADMIN    | create restaurant                                       |
+| /api/votes/user/today                                                    |     GET     |     USER     | get today's vote for authorized user                    |
+| /api/votes/user                                                          |     GET     |     USER     | get votes for authorized user                           |
+| /api/votes/amount/filter?restaurantId={restaurantId}&date={date}         |     GET     |     USER     | get amount of votes for restaurant on date              |
+| /api/votes/amount/today/filter?restaurantId={restaurantId}               |     GET     |     USER     | get amount of votes for restaurant today                |
+| /api/votes                                                               |     POST    |     USER     | create vote                                             |
+| /api/votes/{id}                                                          |     PUT     |     USER     | update vote                                             |
 
 ## cURL requests
 
@@ -116,8 +116,28 @@ Each restaurant provides a new menu each day.
 
 * get dishes on current date
 
-`curl -X GET 'localhost:8080/api/dishes/current-date' \
+`curl -X GET 'localhost:8080/api/dishes/today' \
 -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
+
+* get dishes by restaurant
+
+`curl -X GET 'localhost:8080/api/dishes/filter?restaurantId=100002' \
+  -H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ='`
+
+* get dishes by restaurant and date
+
+`curl -X GET 'localhost:8080/api/dishes/filter?restaurantId=100002&date=2021-06-23' \
+-H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ='`
+
+* get dishes by restaurant and between 2 dates included
+
+`curl -X GET 'localhost:8080/api/dishes/filter?restaurantId=100002&startDate=2021-06-22&endDate=2021-06-23' \
+-H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ='`
+
+* get dishes by restaurant on current date
+
+`curl -X GET 'localhost:8080/api/dishes/today/filter?restaurantId=100002' \
+-H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ='`
 
 * get all restaurants
 
@@ -151,26 +171,6 @@ Each restaurant provides a new menu each day.
 --data-raw '{
 "name":"newname"
 }'`
-
-* get dishes by restaurant
-
-`curl -X GET 'localhost:8080/api/restaurants/100000/dishes' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
-
-* get dishes by restaurant and date 
-
-`curl -X GET 'localhost:8080/api/restaurants/100000/dishes/filter?date=2021-05-14' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
-
-* get dishes by restaurant and between 2 dates included
-
-`curl -X GET 'localhost:8080/api/restaurants/100000/dishes/filter?startDate=2021-05-14&endDate=2021-05-15' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
-
-* get dishes by restaurant on current date
-
-`curl -X GET 'localhost:8080/api/restaurants/100000/dishes/current-date' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'`
 
 * get today's vote for authorized user
 
