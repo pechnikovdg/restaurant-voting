@@ -78,13 +78,14 @@ public class VoteController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody VoteTo voteTo) {
-        log.info("update vote");
+    public void update(@Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
+        log.info("update {}", voteTo);
         Assert.notNull(voteTo, "voteTo must not be null");
-        int id = getCurrentVoteForAuthorizedUser().getId();
-        voteTo.setId(id);
+        assureIdConsistent(voteTo, id);
+        int idCurrentVoteForAuthorizedUsed = getCurrentVoteForAuthorizedUser().getId();
+        assureIdConsistent(voteTo, idCurrentVoteForAuthorizedUsed);
         checkVotingTime(LocalTime.now());
         voteRepository.save(updateFromTo(checkNotFoundWithId(voteRepository.getById(id), id), voteTo));
     }

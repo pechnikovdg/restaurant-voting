@@ -43,7 +43,7 @@ Each restaurant provides a new menu each day.
 | /api/votes/amount/filter?restaurantId={restaurantId}&date={date}    |     GET     |     USER     | get amount of votes for restaurant on date              |
 | /api/votes/amount/today/filter?restaurantId={restaurantId}          |     GET     |     USER     | get amount of votes for restaurant today                |
 | /api/votes                                                          |     POST    |     USER     | create vote                                             |
-| /api/votes                                                          |     PUT     |     USER     | update vote                                             |                                                         |             |              |                                                         |
+| /api/votes/{id}                                                     |     PUT     |     USER     | update vote                                             |                                                         |             |              |                                                         |
 
 ## cURL requests
 
@@ -203,7 +203,7 @@ Each restaurant provides a new menu each day.
 
 * update vote
 
-`curl -X PUT 'localhost:8080/api/votes/' \
+`curl -X PUT 'localhost:8080/api/votes/100037' \
 -H 'Authorization: Basic dXNlckBnbWFpbC5jb206cGFzc3dvcmQ=' \
 -H 'Content-Type: application/json' \
 --data-raw '{
