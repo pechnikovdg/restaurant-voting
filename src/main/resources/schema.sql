@@ -39,7 +39,7 @@ CREATE TABLE dish
     description   VARCHAR(255) NOT NULL,
     price         INTEGER      NOT NULL,
     restaurant_id INTEGER      NOT NULL,
-    CONSTRAINT dish_description_price_restaurant_idx UNIQUE (restaurant_id, dish_date, description, price),
+    CONSTRAINT dish_unique_restaurant_date_description_price_idx UNIQUE (restaurant_id, dish_date, description, price),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE
 );
 CREATE
@@ -51,7 +51,7 @@ CREATE TABLE vote
     vote_date     DATE    NOT NULL,
     restaurant_id INTEGER NOT NULL,
     user_id       INTEGER NOT NULL,
-    CONSTRAINT vote_date_user_idx UNIQUE (vote_date, user_id),
+    CONSTRAINT vote_unique_date_user_idx UNIQUE (vote_date, user_id),
     FOREIGN KEY (restaurant_id) REFERENCES restaurant (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
