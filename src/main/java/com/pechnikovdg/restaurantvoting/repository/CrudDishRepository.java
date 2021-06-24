@@ -17,16 +17,13 @@ public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     @EntityGraph("Dish.restaurant")
     Dish getById(int id);
 
-    @EntityGraph("Dish.restaurant")
     List<Dish> getByRestaurantId(int id);
 
-    @EntityGraph("Dish.restaurant")
     List<Dish> getByRestaurantIdAndDate(int id, LocalDate date);
 
     @EntityGraph("Dish.restaurant")
     List<Dish> getByDate(LocalDate date);
 
-    @EntityGraph("Dish.restaurant")
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :id AND d.date >= :startDate AND d.date <= :endDate")
     List<Dish> getBetweenDatesIncluded(@Param("id") int id, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 

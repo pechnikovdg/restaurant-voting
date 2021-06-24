@@ -16,19 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@NamedEntityGraph(name = "Vote.userAndRestaurant",
-        attributeNodes = {
-                @NamedAttributeNode(value = "user", subgraph = "User.roles"),
-                @NamedAttributeNode("restaurant")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "User.roles",
-                        attributeNodes = {
-                                @NamedAttributeNode("roles")
-                        })
-        }
-)
+@NamedEntityGraph(name = "Vote.restaurant", attributeNodes = @NamedAttributeNode("restaurant"))
 public class Vote extends BaseEntity {
 
     @Column(name = "vote_date", nullable = false)

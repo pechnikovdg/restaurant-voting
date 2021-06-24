@@ -11,13 +11,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
 
-    @EntityGraph("Vote.userAndRestaurant")
+    @EntityGraph("Vote.restaurant")
     Vote getById(int id);
 
-    @EntityGraph("Vote.userAndRestaurant")
+    @EntityGraph("Vote.restaurant")
     Vote getByUserIdAndDate(int userId, LocalDate date);
 
-    @EntityGraph("Vote.userAndRestaurant")
     List<Vote> getByUserId(int userId);
 
     int countByRestaurantIdAndDate(int restaurantId, LocalDate localDate);
