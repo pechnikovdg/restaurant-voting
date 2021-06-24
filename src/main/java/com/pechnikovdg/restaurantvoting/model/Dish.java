@@ -31,7 +31,7 @@ public class Dish extends BaseEntity {
     private String description;
 
     @Column(name = "price", nullable = false)
-    @Range(min = 10, max = 10000)
+    @Range(min = 10, max = 100_000_00)
     private int price;
 
     @Column(name = "dish_date")
