@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.pechnikovdg.restaurantvoting.util.DishUtil.createNewFromTo;
-import static com.pechnikovdg.restaurantvoting.util.DishUtil.updateFromTo;
 import static com.pechnikovdg.restaurantvoting.util.ValidationUtil.*;
 
 @RestController
@@ -55,7 +54,7 @@ public class DishController {
         log.info("update {}", dishTo);
         Assert.notNull(dishTo, "dishTo must not be null");
         assureIdConsistent(dishTo, id);
-        Dish dish = updateFromTo(get(id), dishTo);
+        Dish dish = createNewFromTo(dishTo);
         checkNotFoundWithId(dishRepository.save(dish), id);
     }
 
