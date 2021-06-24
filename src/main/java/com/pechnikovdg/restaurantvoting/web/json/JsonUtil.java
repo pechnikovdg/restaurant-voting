@@ -3,6 +3,7 @@ package com.pechnikovdg.restaurantvoting.web.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class JsonUtil {
 
     public static void setObjectMapper(ObjectMapper objectMapper) {
         JsonUtil.objectMapper = objectMapper;
+        objectMapper.registerModule(new Hibernate5Module());
     }
 
     public static <T> List<T> readValues(String json, Class<T> clazz) throws IOException {
