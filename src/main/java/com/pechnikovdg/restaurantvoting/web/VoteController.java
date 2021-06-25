@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -64,6 +65,7 @@ public class VoteController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<Vote> create(@Valid @RequestBody VoteTo voteTo) {
         log.info("create vote for restaurant with id {}", voteTo.getRestaurantId());
         Assert.notNull(voteTo, "voteTo must not be null");
@@ -80,6 +82,7 @@ public class VoteController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void update(@Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
         log.info("update {}", voteTo);
         Assert.notNull(voteTo, "voteTo must not be null");
