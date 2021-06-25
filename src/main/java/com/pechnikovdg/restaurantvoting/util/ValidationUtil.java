@@ -42,12 +42,6 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkRepeatedVote(boolean repeated) {
-        if (repeated) {
-            throw new IllegalRequestDataException("You have already voted today");
-        }
-    }
-
     public static void assureIdConsistent(HasId bean, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (bean.isNew()) {

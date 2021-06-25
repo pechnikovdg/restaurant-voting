@@ -70,7 +70,6 @@ public class VoteController {
         log.info("create vote for restaurant with id {}", voteTo.getRestaurantId());
         Assert.notNull(voteTo, "voteTo must not be null");
         checkNew(voteTo);
-        checkRepeatedVote(getCurrentVoteForAuthorizedUser() != null);
         Vote created = voteRepository.save(createNewFromTo(voteTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(URL_VOTES + "{/id}")
