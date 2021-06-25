@@ -5,6 +5,8 @@ import com.pechnikovdg.restaurantvoting.repository.CrudDishRepository;
 import com.pechnikovdg.restaurantvoting.to.DishTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,6 +44,7 @@ public class DishController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "dishes", allEntries = true)
     public void delete(@PathVariable int id) {
         log.info("delete dish with id {}", id);
         checkNotFoundWithId(dishRepository.delete(id) != 0, id);
@@ -50,6 +53,7 @@ public class DishController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "dishes", allEntries = true)
     public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int id) {
         log.info("update {}", dishTo);
         Assert.notNull(dishTo, "dishTo must not be null");
@@ -60,6 +64,7 @@ public class DishController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(value = "dishes", allEntries = true)
     public ResponseEntity<Dish> create(@Valid @RequestBody DishTo dishTo) {
         log.info("create {}", dishTo);
         Assert.notNull(dishTo, "dishTo must not be null");
@@ -73,6 +78,7 @@ public class DishController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/today")
+    @Cacheable("dishes")
     public List<Dish> getOnCurrentDate() {
         log.info("get all dishes on current date");
         return dishRepository.getByDate(LocalDate.now());
@@ -106,6 +112,7 @@ public class DishController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(value = "/today/filter", params = "restaurantId")
+    @Cacheable("dishes")
     public List<Dish> getDishesByRestaurantToday(@RequestParam(value = "restaurantId") int id) {
         log.info("get dishes by restaurant with id {} today", id);
         return dishRepository.getByRestaurantIdAndDate(id, LocalDate.now());
