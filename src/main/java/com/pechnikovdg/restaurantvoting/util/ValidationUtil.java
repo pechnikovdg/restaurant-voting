@@ -17,7 +17,7 @@ public class ValidationUtil {
 
     public static void checkVotingTime(LocalTime localTime) {
         if (localTime.isAfter(votingTimeLimit)) {
-            throw new IllegalRequestDataException("You are allowed to vote only until 11:00");
+            throw new IllegalRequestDataException("You are allowed to update your vote only until 11:00");
         }
     }
 

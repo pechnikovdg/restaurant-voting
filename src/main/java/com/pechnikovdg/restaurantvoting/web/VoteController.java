@@ -69,7 +69,6 @@ public class VoteController {
     public ResponseEntity<Vote> create(@Valid @RequestBody VoteTo voteTo) {
         log.info("create vote for restaurant with id {}", voteTo.getRestaurantId());
         Assert.notNull(voteTo, "voteTo must not be null");
-        checkVotingTime(LocalTime.now());
         checkNew(voteTo);
         checkRepeatedVote(getCurrentVoteForAuthorizedUser() != null);
         Vote created = voteRepository.save(createNewFromTo(voteTo));
@@ -85,6 +84,7 @@ public class VoteController {
     @Transactional
     public void update(@Valid @RequestBody VoteTo voteTo, @PathVariable int id) {
         log.info("update {}", voteTo);
+        checkVotingTime(LocalTime.now());
         Assert.notNull(voteTo, "voteTo must not be null");
         assureIdConsistent(voteTo, id);
         int idCurrentVoteForAuthorizedUsed = getCurrentVoteForAuthorizedUser().getId();
