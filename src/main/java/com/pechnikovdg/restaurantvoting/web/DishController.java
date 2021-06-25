@@ -53,8 +53,8 @@ public class DishController {
     public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int id) {
         log.info("update {}", dishTo);
         Assert.notNull(dishTo, "dishTo must not be null");
-        assureIdConsistent(dishTo, id);
         Dish dish = createNewFromTo(dishTo);
+        assureIdConsistent(dish, id);
         checkNotFoundWithId(dishRepository.save(dish), id);
     }
 
